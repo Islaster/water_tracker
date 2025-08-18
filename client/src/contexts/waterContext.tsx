@@ -13,6 +13,8 @@ type WaterContextType = {
   ) => void;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  changeUnit: boolean;
+  setChangeUnit: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const WaterContext = createContext<WaterContextType | undefined>(undefined);
@@ -22,6 +24,8 @@ export const WaterProvider = ({ children }: { children: React.ReactNode }) => {
     weight: 0,
     height: 0,
   });
+
+  const [changeUnit, setChangeUnit] = useState(true);
 
   const [page, setPage] = useState(0);
 
@@ -33,6 +37,8 @@ export const WaterProvider = ({ children }: { children: React.ReactNode }) => {
     updateBodyState,
     setPage,
     page,
+    changeUnit,
+    setChangeUnit,
   };
   return (
     <WaterContext.Provider value={value}>{children}</WaterContext.Provider>
