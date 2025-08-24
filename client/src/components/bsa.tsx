@@ -36,13 +36,6 @@ export default function BSA() {
         Water Tracker Setup
       </h2>
 
-      <button
-        onClick={() => setChangeUnit(!changeUnit)}
-        className="mb-6 w-full px-4 py-2 bg-blue-100 text-blue-700 font-medium rounded-full hover:bg-blue-200 transition"
-      >
-        Switch to {changeUnit ? "Imperial" : "Metric"}
-      </button>
-
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Height main */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">

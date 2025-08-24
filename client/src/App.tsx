@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import BSA from "./components/bsa.tsx";
 import { useWaterContext } from "./contexts/waterContext.tsx";
 import DailyWaterIntake from "./components/dailyWaterIntake.tsx";
+import Navbar from "./components/navbar.tsx";
 
 function App() {
   const { page } = useWaterContext();
@@ -9,6 +10,11 @@ function App() {
     0: <BSA />,
     1: <DailyWaterIntake />,
   };
-  return lookup[page];
+  return (
+    <>
+      <Navbar />
+      {lookup[page]}
+    </>
+  );
 }
 export default App;
