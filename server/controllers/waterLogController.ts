@@ -3,7 +3,9 @@ type PostBody = {
   amount: number;
 };
 
-export function addWaterEntry(req, res) {}
+export function addWaterEntry(req, res) {
+  return;
+}
 
 export function getWaterEntry() {}
 

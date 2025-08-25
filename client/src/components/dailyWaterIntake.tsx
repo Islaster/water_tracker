@@ -6,6 +6,19 @@ export default function DailyWaterIntake() {
   const { bodyState, changeUnit } = useWaterContext();
   const [unit, setUnit] = useState("L");
 
+  function handleClick() {
+    fetch("http://localhost:3001/api/add/waterentry", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount: Number(parseFloat(waterIntake).toFixed(1)),
+        unit: unit,
+      }),
+    });
+  }
+
   // Update unit when changeUnit changes
   useEffect(() => {
     setUnit(changeUnit ? "L" : "OZ");
@@ -32,7 +45,7 @@ export default function DailyWaterIntake() {
       </p>
 
       <button
-        onClick={() => alert("Feature coming soon: Log water intake!")}
+        onClick={() => handleClick}
         className="px-6 py-2 bg-blue-500 text-white font-medium rounded-full hover:bg-blue-600 transition"
       >
         Log Water
