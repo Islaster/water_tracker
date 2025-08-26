@@ -2,7 +2,7 @@ import { useWaterContext } from "../contexts/waterContext";
 import { dailyWaterIntakeFormula } from "../ultilites/dailyWaterIntakeFormula";
 import { useState, useEffect } from "react";
 
-export default function DailyWaterIntake() {
+export default function DailyIntakeCalcResult() {
   const { bodyState, changeUnit } = useWaterContext();
   const [unit, setUnit] = useState("L");
 

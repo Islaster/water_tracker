@@ -1,10 +1,9 @@
 import { useWaterContext } from "../contexts/waterContext";
 import { useState, useEffect } from "react";
 
-export default function BSA() {
+export default function DailyIntakeCalc() {
   const [unit, setUnit] = useState({ main: "m", sub: "cm", weight: "kg" });
-  const { updateBodyState, setPage, page, changeUnit, setChangeUnit } =
-    useWaterContext();
+  const { updateBodyState, setPage, page, changeUnit } = useWaterContext();
 
   useEffect(() => {
     setUnit(
@@ -33,7 +32,7 @@ export default function BSA() {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg mt-10 border border-blue-100">
       <h2 className="text-2xl font-semibold text-blue-600 mb-4 text-center">
-        Water Tracker Setup
+        Daily Water Calculator(estimate)
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-5">
