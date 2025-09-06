@@ -1,7 +1,7 @@
 import type { JSX } from "react";
-import DailyIntakeCalc from "../components/dailyIntakeCalc.tsx";
+import DailyIntakeCalc from "../components/waterIntake/dailyIntakeCalc.tsx";
 import { useWaterContext } from "../contexts/waterContext.tsx";
-import DailyIntakeCalcResult from "../components/dailyIntakeCalcResult.tsx";
+import DailyIntakeCalcResult from "../components/waterIntake/dailyIntakeCalcResult.tsx";
 
 function Calc() {
   const { page } = useWaterContext();
