@@ -22,6 +22,7 @@ export default function LoginForm() {
           type="text"
           name="username"
           id="username"
+          autoComplete="username"
           placeholder="Enter your username"
           className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           onChange={(e) => updateUserState("user", e.target.value)}
@@ -38,6 +39,7 @@ export default function LoginForm() {
           name="password"
           id="password"
           placeholder="Enter your password"
+          autoComplete="current-password"
           className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           onChange={(e) => updateUserState("pass", e.target.value)}
         />
