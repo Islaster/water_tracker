@@ -32,9 +32,11 @@ export default function Landing() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
           {/* Primary button */}
-          <button className="px-8 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-md hover:bg-blue-600 transition">
-            Login / Signup
-          </button>
+          <Link to="auth">
+            <button className="px-8 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-md hover:bg-blue-600 transition">
+              Login / Signup
+            </button>
+          </Link>
 
           {/* Secondary button */}
           <Link to="calc">

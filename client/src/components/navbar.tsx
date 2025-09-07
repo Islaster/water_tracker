@@ -1,8 +1,25 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useWaterContext } from "../contexts/waterContext";
 
 export default function Navbar() {
+  const { pathname } = useLocation();
   const { setChangeUnit, changeUnit } = useWaterContext();
+
+  function renderUnits() {
+    //pages to render on
+    const pages = ["/calc"];
+    const matchedPage = pages.find((page) => page == pathname);
+    if (matchedPage) {
+      return (
+        <button
+          className="px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-100 text-blue-700 font-medium rounded-full hover:bg-blue-200 transition"
+          onClick={() => setChangeUnit(!changeUnit)}
+        >
+          Switch Units
+        </button>
+      );
+    }
+  }
 
   return (
     <nav className="w-full bg-white/90 backdrop-blur border-b border-gray-200 sticky top-0 z-50">
@@ -19,12 +36,7 @@ export default function Navbar() {
         {/* Right side: Unit switch + Auth */}
         <div className="flex items-center gap-3">
           {/* your existing button, unchanged */}
-          <button
-            className="px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-100 text-blue-700 font-medium rounded-full hover:bg-blue-200 transition"
-            onClick={() => setChangeUnit(!changeUnit)}
-          >
-            Switch Units
-          </button>
+          {renderUnits()}
 
           {/* Auth dropdown (pure HTML/CSS) */}
           <details className="relative">
