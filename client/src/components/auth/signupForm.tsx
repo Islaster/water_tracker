@@ -1,20 +1,28 @@
 import { useUserContext } from "../../contexts/userContext";
+import { useNavigate } from "react-router";
 
 export default function SignupForm() {
   const { updateUserState, userState } = useUserContext();
+  const navigate = useNavigate();
 
-  function handleSubmit() {
-    fetch("http://localhost:3001/api/signup", {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    fetch("http://localhost:3001/api/add/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userState }),
+      body: JSON.stringify({
+        email: userState.email,
+        pass: userState.pass,
+        user: userState.user,
+      }),
     });
+    navigate("/dashboard");
   }
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={() => handleSubmit}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       {/* Username */}
       <div className="flex flex-col">
         <label htmlFor="username" className="text-gray-700 font-medium mb-1">

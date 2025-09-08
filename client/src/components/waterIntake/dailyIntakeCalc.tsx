@@ -2,16 +2,8 @@ import { useWaterContext } from "../../contexts/waterContext";
 import { useState, useEffect } from "react";
 
 export default function DailyIntakeCalc() {
-  const [unit, setUnit] = useState({ main: "m", sub: "cm", weight: "kg" });
-  const { updateBodyState, setPage, page, changeUnit } = useWaterContext();
-
-  useEffect(() => {
-    setUnit(
-      changeUnit
-        ? { main: "m", sub: "cm", weight: "kg" }
-        : { main: "ft", sub: "in", weight: "lbs" }
-    );
-  }, [changeUnit]);
+  const { updateBodyState, setPage, page, changeUnit, unit } =
+    useWaterContext();
 
   const [measurements, setMeasurements] = useState({
     height: { main: 0, sub: 0 },

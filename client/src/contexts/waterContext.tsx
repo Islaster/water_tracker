@@ -1,8 +1,14 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 
 type BodyState = {
   weight: number;
   height: number;
+};
+
+type UnitState = {
+  main: string;
+  sub: string;
+  weight: string;
 };
 
 type WaterContextType = {
@@ -14,6 +20,8 @@ type WaterContextType = {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   changeUnit: boolean;
+  unit: UnitState;
+  setUnit: React.Dispatch<React.SetStateAction<UnitState>>;
   setChangeUnit: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -29,6 +37,18 @@ export const WaterProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [page, setPage] = useState(0);
 
+  const [unit, setUnit] = useState({
+    main: "m",
+    sub: "cm",
+    weight: "kg",
+  });
+
+  useEffect(() => {
+    changeUnit
+      ? setUnit({ main: "m", sub: "cm", weight: "kg" })
+      : setUnit({ main: "ft", sub: "in", weight: "lbs" });
+  }, [changeUnit]);
+
   const updateBodyState = (key: string, value: number) => {
     setBodyState((prev) => ({ ...prev, [key]: value }));
   };
@@ -37,6 +57,8 @@ export const WaterProvider = ({ children }: { children: React.ReactNode }) => {
     updateBodyState,
     setPage,
     page,
+    unit,
+    setUnit,
     changeUnit,
     setChangeUnit,
   };

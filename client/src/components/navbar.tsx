@@ -7,7 +7,7 @@ export default function Navbar() {
 
   function renderUnits() {
     //pages to render on
-    const pages = ["/calc"];
+    const pages = ["/calc", "/dashboard"];
     const matchedPage = pages.find((page) => page == pathname);
     if (matchedPage) {
       return (
