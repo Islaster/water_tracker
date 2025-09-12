@@ -10,8 +10,8 @@ const app: Application = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
 app.use(express.json()); // parse JSON body
+app.use(cors());
 
 // Health check
 app.get("/health", (_req: Request, res: Response) => {

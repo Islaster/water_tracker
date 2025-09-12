@@ -1,18 +1,33 @@
 import { useUserContext } from "../../contexts/userContext";
+import { useNavigate } from "react-router";
 
 export default function LoginForm() {
-  const { updateUserState, userState } = useUserContext();
-  function handleSubmit() {
-    fetch("http://localhost:3001/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userState }),
-    });
+  const { updateUserState, userState, setLoggedInState } = useUserContext();
+  const navigate = useNavigate();
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:3001/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: userState.user,
+          password: userState.pass,
+        }),
+      });
+      const data = await res.json();
+      setLoggedInState(data);
+      navigate("/dashboard");
+    } catch (err) {
+      console.log(err);
+    }
   }
+
   return (
-    <form className="flex flex-col gap-4" onSubmit={() => handleSubmit}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       {/* Username */}
       <div className="flex flex-col">
         <label htmlFor="username" className="text-gray-700 font-medium mb-1">

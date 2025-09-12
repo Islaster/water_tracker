@@ -16,12 +16,13 @@ export async function createUser(
   return rows[0];
 }
 
-export async function findUserById(id: number) {
+export async function findUserByUsername(username: string) {
   const query = `
-        SELECT * FROM users WHERE id = $1;
+        SELECT * FROM users WHERE username = $1
+        limit 1;
     `;
 
-  const values = [id];
+  const values = [username];
   const { rows } = await pool.query(query, values);
   return rows[0];
 }

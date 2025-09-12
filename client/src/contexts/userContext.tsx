@@ -1,9 +1,17 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 
 type UserState = {
   user: string;
   pass: string;
   email: string;
+};
+
+type UserLoginState = {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  created_at: string;
 };
 
 type UserContextType = {
@@ -12,8 +20,12 @@ type UserContextType = {
     key: K,
     value: UserState[K]
   ) => void;
-  //setPage: React.Dispatch<React.SetStateAction<number>>;
-  //setChangeUnit: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  loggedIn: boolean;
+  setLoggedInState: React.Dispatch<
+    React.SetStateAction<UserLoginState | undefined>
+  >;
+  loggedInState: UserLoginState | undefined;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -25,12 +37,31 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     email: "",
   });
 
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedInState, setLoggedInState] = useState<
+    UserLoginState | undefined
+  >({
+    id: 0,
+    username: "",
+    password: "",
+    email: "",
+    created_at: "",
+  });
+
+  useEffect(() => {
+    setLoggedIn(true);
+  }, [loggedInState]);
+
   const updateUserState = (key: string, value: string) => {
     setUserState((prev) => ({ ...prev, [key]: value }));
   };
   const value = {
     userState,
     updateUserState,
+    loggedIn,
+    setLoggedIn,
+    loggedInState,
+    setLoggedInState,
   };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

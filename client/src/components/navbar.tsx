@@ -1,10 +1,16 @@
 import { Link, useLocation } from "react-router";
 import { useWaterContext } from "../contexts/waterContext";
+import { useUserContext } from "../contexts/userContext";
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const { loggedIn, setLoggedIn, setLoggedInState } = useUserContext();
   const { setChangeUnit, changeUnit } = useWaterContext();
 
+  function logOut() {
+    setLoggedIn(false);
+    setLoggedInState(undefined);
+  }
   function renderUnits() {
     //pages to render on
     const pages = ["/calc", "/dashboard"];
@@ -17,6 +23,42 @@ export default function Navbar() {
         >
           Switch Units
         </button>
+      );
+    }
+  }
+
+  function renderAuth() {
+    if (loggedIn) {
+      return (
+        <>
+          <Link
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+            to="/profile"
+          >
+            Profile
+          </Link>
+          <Link
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+            to="/dashboard"
+          >
+            Dashboard
+          </Link>
+          <div
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+            onClick={() => logOut()}
+          >
+            Log Out
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <Link
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+          to="/auth"
+        >
+          Log in / Signup
+        </Link>
       );
     }
   }
@@ -56,39 +98,7 @@ export default function Navbar() {
 
             {/* menu */}
             <div className="absolute right-0 mt-2 w-56 rounded-xl border border-gray-200 bg-white/95 backdrop-blur shadow-lg ring-1 ring-black/5 overflow-hidden">
-              <div className="py-1">
-                <a
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  href="/login"
-                >
-                  Log in
-                </a>
-                <a
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  href="/signup"
-                >
-                  Sign up
-                </a>
-
-                <div className="my-1 h-px bg-gray-100" />
-
-                {/* plug-and-play: replace these with post-login items later */}
-                <div className="px-4 py-2 text-xs uppercase tracking-wide text-gray-400">
-                  water logs
-                </div>
-                <a
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  href="/profile"
-                >
-                  Profile
-                </a>
-                <a
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  href="/dashboard"
-                >
-                  Dashboard
-                </a>
-              </div>
+              <div className="py-1">{renderAuth()}</div>
             </div>
           </details>
         </div>

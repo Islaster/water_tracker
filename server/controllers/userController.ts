@@ -4,7 +4,7 @@ import {
   editUser,
   deleteUser,
   findAllUsers,
-  findUserById,
+  findUserByUsername,
 } from "../services/users";
 
 export async function addUser(req: Request, res: Response) {
@@ -15,7 +15,7 @@ export async function addUser(req: Request, res: Response) {
     }
 
     const newUser = await createUser(user, pass, email);
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal Server Error" });
@@ -66,11 +66,11 @@ export async function allUsers(req: Request, res: Response) {
 
 export async function findOneUser(req: Request, res: Response) {
   try {
-    const id = Number(req.params.id);
-    if (Number.isNaN(id))
-      return res.status(400).json({ message: "Invalid user id" });
-    const user = await findUserById(id);
-    res.status(200).json(user);
+    const { username, password } = req.body;
+    if (!username) return res.status(400).json({ message: "missing username" });
+    const user = await findUserByUsername(username);
+    console.log(user);
+    return res.status(200).json(user);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal Server Error" });

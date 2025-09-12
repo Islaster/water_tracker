@@ -7,7 +7,7 @@ export default function SignupForm() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetch("http://localhost:3001/api/add/user", {
+    fetch("http://localhost:3001/api/user/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
