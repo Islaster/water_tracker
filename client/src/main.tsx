@@ -7,13 +7,11 @@ import { UserProvider } from "./contexts/userContext.tsx";
 import { BrowserRouter } from "react-router";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <WaterProvider>
-        <UserProvider>
-          <App />
-        </UserProvider>
-      </WaterProvider>
-    </BrowserRouter>
-  </StrictMode>
+  <BrowserRouter>
+    <WaterProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </WaterProvider>
+  </BrowserRouter>
 );

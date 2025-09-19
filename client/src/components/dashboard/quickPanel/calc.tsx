@@ -1,5 +1,5 @@
 import { useWaterContext } from "../../../contexts/waterContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function MiniCalc() {
   const { updateBodyState, setPage, page, changeUnit, setChangeUnit, unit } =
@@ -12,9 +12,11 @@ export default function MiniCalc() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (changeUnit) {
+      //meters
       const m = measurements.height.main * 100;
       updateBodyState("height", m + measurements.height.sub);
     } else {
+      //feet
       const ft = measurements.height.main * 12;
       updateBodyState("height", ft + measurements.height.sub);
     }

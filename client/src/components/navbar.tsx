@@ -1,8 +1,9 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useWaterContext } from "../contexts/waterContext";
 import { useUserContext } from "../contexts/userContext";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { loggedIn, setLoggedIn, setLoggedInState } = useUserContext();
   const { setChangeUnit, changeUnit } = useWaterContext();
@@ -10,6 +11,7 @@ export default function Navbar() {
   function logOut() {
     setLoggedIn(false);
     setLoggedInState(undefined);
+    navigate("/ ");
   }
   function renderUnits() {
     //pages to render on

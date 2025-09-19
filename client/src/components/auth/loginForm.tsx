@@ -8,21 +8,25 @@ export default function LoginForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
+      //send data to the server
       const res = await fetch("http://localhost:3001/api/login/", {
-        method: "POST",
+        // endpoint
+        method: "POST", //needed to send data to the server
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", //type of data im sending
         },
+        //data being sent
         body: JSON.stringify({
           username: userState.user,
           password: userState.pass,
         }),
       });
+      //transforms promsise to data
       const data = await res.json();
+      localStorage.setItem("user", data.id);
       setLoggedInState(data);
-      navigate("/dashboard");
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

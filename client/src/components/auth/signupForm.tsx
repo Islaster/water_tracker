@@ -2,23 +2,33 @@ import { useUserContext } from "../../contexts/userContext";
 import { useNavigate } from "react-router";
 
 export default function SignupForm() {
-  const { updateUserState, userState } = useUserContext();
+  const { updateUserState, userState, setLoggedInState } = useUserContext();
   const navigate = useNavigate();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetch("http://localhost:3001/api/user/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: userState.email,
-        pass: userState.pass,
-        user: userState.user,
-      }),
-    });
-    navigate("/dashboard");
+    try {
+      //sends signup data to the server
+      const res = await fetch("http://localhost:3001/api/user/add", {
+        //endpoint
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          //data being sent
+          email: userState.email,
+          pass: userState.pass,
+          user: userState.user,
+        }),
+      });
+      //transforms promsise to data
+      const data = await res.json();
+      setLoggedInState(data);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (

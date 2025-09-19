@@ -2,12 +2,49 @@ import { config } from "dotenv";
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import userRoutes from "./routes/authRoute";
-
+import waterRoutes from "./routes/waterLogsRoute";
+import { Server as SocketIoServer } from "socket.io";
+import { createServer } from "http";
+import { getLatestUserWaterLogs } from "./services/waterLogs";
 // Load env variables
 config();
 
+type DataType = {
+  id: number;
+  amount: number;
+  user_id: number;
+  created_at: string;
+  unit: string;
+};
+
 const app: Application = express();
 const PORT = process.env.PORT || 3001;
+const server = createServer(app);
+
+//websocket
+export const io = new SocketIoServer(server, {
+  cors: {
+    origin: "*", // adjust for your frontend
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connect", (socket) => {
+  socket.on("waterLogs", async (entries) => {
+    try {
+      const latestEntries = await getLatestUserWaterLogs(
+        parseInt(entries["user_id"])
+      );
+      socket.emit("waterLogs", latestEntries);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+  console.log("connected ", socket.id);
+  socket.on("disconnect", () => {
+    console.log("❌ Client disconnected:", socket.id);
+  });
+});
 
 // Middleware
 app.use(express.json()); // parse JSON body
@@ -20,6 +57,7 @@ app.get("/health", (_req: Request, res: Response) => {
 
 // Routes
 app.use("/api", userRoutes);
+app.use("/api", waterRoutes);
 
 // 404 handler
 app.use((_req: Request, res: Response) => {
@@ -33,6 +71,6 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

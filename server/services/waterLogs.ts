@@ -24,3 +24,16 @@ export async function getWaterLogs() {
   const { rows } = await pool.query(query);
   return rows;
 }
+
+export async function getLatestUserWaterLogs(user_id: number) {
+  const query = `
+    SELECT *
+    FROM water_logs
+    WHERE user_id = $1
+    ORDER BY created_at DESC
+    LIMIT 15;
+  `;
+
+  const { rows } = await pool.query(query, [user_id]);
+  return rows;
+}

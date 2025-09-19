@@ -1,23 +1,44 @@
+import { useUserContext } from "../../../contexts/userContext";
 import { useWaterContext } from "../../../contexts/waterContext";
 import { useState } from "react";
+
+type WaterLogEntry = {
+  user_id: number | undefined;
+  amount: number;
+  unit: string;
+};
 
 export default function MiniLogWater() {
   const [amount, setAmount] = useState(0);
 
   const { changeUnit } = useWaterContext();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const user = localStorage.getItem("user");
+  console.log(user);
 
-    fetch("http://localhost:3001/api/add/user", {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const body: WaterLogEntry = {
+      user_id: undefined,
+      amount: 0,
+      unit: "",
+    };
+
+    if (user) {
+      body.user_id = parseInt(user);
+      body.amount = amount;
+      body.unit = changeUnit ? "ml" : "oz";
+    } else {
+      body.amount = amount;
+      body.unit = changeUnit ? "ml" : "oz";
+    }
+
+    e.preventDefault();
+    await fetch("http://localhost:3001/api/water/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        amount,
-        unit: changeUnit ? "ml" : "oz",
-      }),
+      body: JSON.stringify(body),
     });
   }
 

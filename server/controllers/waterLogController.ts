@@ -1,11 +1,18 @@
 import { Request, Response } from "express";
-import { getWaterLogs, createWaterLog } from "../services/waterLogs";
+import {
+  getWaterLogs,
+  createWaterLog,
+  getLatestUserWaterLogs,
+} from "../services/waterLogs";
+import { io } from "../server";
 
-export function addWaterEntry(req: Request, res: Response) {
+export async function addWaterEntry(req: Request, res: Response) {
   try {
     const { amount, user_id, unit } = req.body;
 
-    const newEntry = createWaterLog(amount, unit, user_id);
+    const latestEntries = await getLatestUserWaterLogs(user_id);
+    const newEntry = await createWaterLog(amount, unit, user_id);
+    io.emit("waterLogs", latestEntries);
     res.status(201).json(newEntry);
   } catch (err) {
     console.log(err);
@@ -13,9 +20,10 @@ export function addWaterEntry(req: Request, res: Response) {
   }
 }
 
-export function getAllWaterEntries(res: Response, req: Request) {
+export async function getAllWaterEntries(req: Request, res: Response) {
+  const id = req.params.id;
   try {
-    const entries = getWaterLogs();
+    const entries = await getWaterLogs();
     res.status(200).json(entries);
   } catch (err) {
     console.log(err);

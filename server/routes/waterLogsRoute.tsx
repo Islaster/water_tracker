@@ -6,7 +6,7 @@ import {
 
 const router = Router();
 
-router.post("/add/water", addWaterEntry);
-router.get("water", getAllWaterEntries);
+router.post("/water/add", addWaterEntry);
+router.get("/waters", getAllWaterEntries);
 
 export default router;
